@@ -4,28 +4,33 @@ import { RectButton } from 'react-native-gesture-handler';
 export const Container = styled.View`
   flex: 1;
   padding: 30px 30px 0 30px;
+  background: #1e1e2a;
 `;
 
 export const Form = styled.View`
   flex-direction: row;
   padding-bottom: 20px;
   border-bottom-width: 1px;
-  border-color: #eee;
+  border-color: #7b7791;
 `;
 export const Input = styled.TextInput.attrs({
-  placeholderTextColor: '#999',
+  placeholderTextColor: '#fff',
+  autoCorrect: false,
+  autoCapitalize: 'none',
+  placeholder: 'Adicionar usuário',
 })`
   flex: 1;
   height: 40px;
-  background: #eee;
+  background: #7b7791;
   border-radius: 4px;
+  color: #fff;
   padding: 0 15px;
-  border: 1px solid #eee;
+  border: 1px solid ${props => (props.failure ? '#dc3545' : '#7b7791')};
 `;
 export const SubmitButton = styled(RectButton)`
   justify-content: center;
   align-items: center;
-  background: #7159c1;
+  background: #44404d;
   border-radius: 4px;
   margin-left: 10px;
   padding: 0 12px;
@@ -52,7 +57,7 @@ export const Avatar = styled.Image`
 
 export const Name = styled.Text`
   font-size: 14px;
-  color: #333;
+  color: #fff;
   font-weight: bold;
   margin-top: 4px;
   text-align: center;
@@ -63,7 +68,7 @@ export const Bio = styled.Text.attrs({
 })`
   font-size: 13px;
   line-height: 18px;
-  color: #999;
+  color: #7b7791;
   margin-top: 5px;
   text-align: center;
 `;
@@ -72,7 +77,7 @@ export const ProfileButton = styled(RectButton)`
   margin-top: 10px;
   align-self: stretch;
   border-radius: 4px;
-  background: #7159c1;
+  background: #44404d;
   justify-content: center;
   align-items: center;
   height: 36px;

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { NavigationEvents } from 'react-navigation';
 import api from '../../services/api';
 import {
   Container,
@@ -31,8 +33,8 @@ const styles = StyleSheet.create({
 });
 
 export default class User extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('user').name,
+  static navigationOptions = () => ({
+    title: 'Stars',
   });
 
   // eslint-disable-next-line react/static-property-placement
@@ -48,6 +50,8 @@ export default class User extends Component {
     page: 1,
     loading: true,
     loadingMore: false,
+    openWebView: false,
+    item: {},
   };
 
   async componentDidMount() {
@@ -76,8 +80,36 @@ export default class User extends Component {
     });
   };
 
+  renderGithubContent() {
+    const { item } = this.state;
+    console.log(`https://github.com/${item.owner.login}/${item.name}`);
+
+    return (
+      <>
+        <WebView
+          source={{
+            uri: `https://github.com/${item.owner.login}/${item.name}`,
+          }}
+          style={{ flex: 1 }}
+          javaScriptEnabled
+          domStorageEnabled
+        />
+        <NavigationEvents
+          onWillFocus={() => {
+            this.setState({ openWebView: false });
+          }}
+        />
+      </>
+    );
+  }
+
   renderItem = ({ item }) => (
-    <Starred>
+    <Starred
+      onPress={async () => {
+        this.setState({ openWebView: true, item });
+        await this.renderGithubContent();
+      }}
+    >
       <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
       <Info>
         <Title>{item.name}</Title>
@@ -87,13 +119,13 @@ export default class User extends Component {
   );
 
   renderFooter = () => {
-    const { loadingMore } = this.state;
-    if (loadingMore) return null;
+    const { loadingMore, stars } = this.state;
+    if (loadingMore || stars.length < 10) return null;
 
     return (
       <View style={styles.loading}>
         <ActivityIndicator
-          color="#7159c1"
+          color="#fff"
           size={30}
           style={styles.activityIndicator}
         />
@@ -103,8 +135,11 @@ export default class User extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { stars, loading } = this.state;
+    const { stars, loading, openWebView } = this.state;
     const user = navigation.getParam('user');
+    if (openWebView) {
+      return this.renderGithubContent();
+    }
     return (
       <Container>
         <Header>
@@ -114,7 +149,7 @@ export default class User extends Component {
         </Header>
         {loading ? (
           <ActivityIndicator
-            color="#7159c1"
+            color="#fff"
             size={30}
             style={styles.activityIndicator}
           />

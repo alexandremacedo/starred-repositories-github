@@ -3,13 +3,14 @@ import styled from 'styled-components';
 export const Container = styled.View`
   flex: 1;
   padding: 20px 20px 0 20px;
+  background: #1e1e2a;
 `;
 
 export const Header = styled.View`
   align-items: center;
   padding-bottom: 20px;
   border-bottom-width: 1px;
-  border-color: #eee;
+  border-color: #7b7791;
 `;
 export const Avatar = styled.Image`
   width: 100px;
@@ -19,7 +20,7 @@ export const Avatar = styled.Image`
 `;
 export const Name = styled.Text`
   font-size: 20px;
-  color: #333;
+  color: #fff;
   font-weight: bold;
   margin-top: 10px;
   text-align: center;
@@ -28,7 +29,7 @@ export const Name = styled.Text`
 export const Bio = styled.Text`
   font-size: 14px;
   line-height: 18px;
-  color: #999;
+  color: #7b7791;
   margin-top: 5px;
   text-align: center;
 `;
@@ -40,8 +41,8 @@ export const Stars = styled.FlatList.attrs({
   height: 101%;
 `;
 
-export const Starred = styled.View`
-  background: #fff;
+export const Starred = styled.TouchableOpacity`
+  background: #44404d;
   border-radius: 4px;
   padding: 10px 15px;
   margin-bottom: 10px;
@@ -64,10 +65,10 @@ export const Title = styled.Text.attrs({
 })`
   font-size: 15px;
   font-weight: bold;
-  color: #333;
+  color: #fff;
 `;
 export const Author = styled.Text`
   font-size: 13px;
-  color: #666;
+  color: #7b7791;
   margin-top: 2px;
 `;

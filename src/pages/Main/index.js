@@ -36,6 +36,7 @@ export default class Main extends Component {
     newUser: '',
     users: [],
     loading: false,
+    failure: false,
   };
 
   async componentDidMount() {
@@ -55,24 +56,42 @@ export default class Main extends Component {
   }
 
   handleAddUser = async () => {
-    const { users, newUser } = this.state;
+    this.setState({ loading: true, failure: false });
 
-    this.setState({ loading: true });
+    try {
+      const { users, newUser } = this.state;
 
-    const response = await api.get(`/users/${newUser}`);
+      if (newUser === '') throw 'Adicione o usuário desejado';
 
-    const data = {
-      name: response.data.name,
-      login: response.data.login,
-      bio: response.data.bio,
-      avatar: response.data.avatar_url,
-    };
+      const hasUser = await users.find(
+        user => user.login.toLowerCase() === newUser.toLowerCase()
+      );
 
-    this.setState({
-      users: [...users, data],
-      newUser: '',
-      loading: false,
-    });
+      if (hasUser) throw 'Usuário já adicionado';
+
+      const response = await api.get(`/users/${newUser}`);
+
+      const data = {
+        name: response.data.name,
+        login: response.data.login,
+        bio: response.data.bio,
+        avatar: response.data.avatar_url,
+      };
+
+      this.setState({
+        users: [data, ...users],
+        newUser: '',
+        loading: false,
+      });
+    } catch (failure) {
+      this.setState({
+        failure: true,
+      });
+    } finally {
+      this.setState({
+        loading: false,
+      });
+    }
 
     KeyBoard.dismiss();
   };
@@ -83,15 +102,13 @@ export default class Main extends Component {
   };
 
   render() {
-    const { users, newUser, loading } = this.state;
+    const { users, newUser, loading, failure } = this.state;
     return (
       <Container>
         <Form>
           <Input
-            autoCorrect={false}
-            autoCapitalize="none"
-            placeholder="Adicionar usuário"
             value={newUser}
+            failure={failure}
             onChangeText={text => this.setState({ newUser: text })}
             returnKeyType="send"
             onSubmitEditing={this.handleAddUser}
@@ -105,7 +122,6 @@ export default class Main extends Component {
           </SubmitButton>
         </Form>
         <List
-          inverted
           data={users}
           keyExtractor={user => user.login}
           renderItem={({ item }) => (

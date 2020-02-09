@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Github" title="Github" src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" width="200px" />
+  <img alt="Github" title="Github" src=".github/logo-starred-github.png" width="200px" />
 </h1>
 
 <h3 align="center">
@@ -76,7 +76,7 @@ $ yarn ios
 
 ## Prévia
 <p align="left">
-  <img alt="Home users" src=".github/previa.png" width="400px">
+  <img alt="Home users" src=".github/previa.png" width="600px">
 </p>
 
 ## Consulte a documentação
